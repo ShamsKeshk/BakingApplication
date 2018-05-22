@@ -63,7 +63,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             if (!TextUtils.isEmpty(recipeName)) {
                 holder.recipeNameTextView.setText(recipeName);
             } else {
-                holder.recipeNameTextView.setText("Not Provided");
+                holder.recipeNameTextView.setText(context.getString(R.string.not_provided));
             }
 
             if (!TextUtils.isEmpty(recipeImage)) {
@@ -73,7 +73,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             }
 
             if (!(recipeServings < 0)) {
-                holder.recipeServingsTextView.setText("Servings : " + recipeServings);
+                String servingsText = context.getString(R.string.servings) + recipeServings;
+                holder.recipeServingsTextView.setText(servingsText);
             } else {
                 holder.recipeNameTextView.setText("-");
             }

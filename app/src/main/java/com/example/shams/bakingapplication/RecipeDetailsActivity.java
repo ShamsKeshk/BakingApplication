@@ -44,7 +44,7 @@ public class RecipeDetailsActivity extends AppCompatActivity
         int stepCellsNUmber = recipesArrayList.get(0).getSteps().size();
         Intent intent = new Intent(this,StepActivity.class);
         intent.putExtra(Constants.KEY_CURRENT_STEP_ID,itemId);
-        intent.putExtra(Constants.KEY_STEP_CELLS_NUMBER,stepCellsNUmber);
+        intent.putExtra(Constants.KEY_STEPS_SIZE_NUMBER,stepCellsNUmber);
         intent.putParcelableArrayListExtra(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST,recipesArrayList);
         startActivity(intent);
     }

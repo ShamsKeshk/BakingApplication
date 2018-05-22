@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.shams.bakingapplication.adapters.RecipeAdapter;
 import com.example.shams.bakingapplication.model.Recipes;
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.rv_recipe_recycler_view_main_activity_id)
     RecyclerView recyclerView;
+    @BindView(R.id.progress_par_main_activity_id)
+    ProgressBar progressBar;
+
     ArrayList<Recipes> recipesArrayList;
 
     RecipeAdapter recipeAdapter;
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
 
@@ -46,11 +53,11 @@ public class MainActivity extends AppCompatActivity
         recipeAdapter.setRecipesList(recipesArrayList);
         recipeAdapter.notifyDataSetChanged();
 
-        loadData();
+        retrievalListOfRecipes();
 
     }
 
-    public void loadData() {
+    public void retrievalListOfRecipes() {
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
 
@@ -64,10 +71,11 @@ public class MainActivity extends AppCompatActivity
         final Call<ArrayList<Recipes>> recipeListCall = apiInterface.getRecipes();
 
         recipeListCall.enqueue(new Callback<ArrayList<Recipes>>() {
+
             @Override
             public void onResponse(Call<ArrayList<Recipes>> call, Response<ArrayList<Recipes>> response) {
                 if (response.isSuccessful()) {
-
+                    progressBar.setVisibility(View.GONE);
                     recipesArrayList = response.body();
                     recipeAdapter.setRecipesList(recipesArrayList);
                     recipeAdapter.notifyDataSetChanged();

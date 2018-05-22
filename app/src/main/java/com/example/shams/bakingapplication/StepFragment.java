@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ProxyInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -78,7 +79,7 @@ public class StepFragment extends Fragment {
         StepFragment fragment = new StepFragment();
         Bundle args = new Bundle();
         args.putInt(Constants.KEY_CURRENT_STEP_ID,mCurrentStepId);
-        args.putInt(Constants.KEY_STEP_CELLS_NUMBER,stepsCellsNumber);
+        args.putInt(Constants.KEY_STEPS_SIZE_NUMBER,stepsCellsNumber);
         args.putParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST,recipesArrayList);
         fragment.setArguments(args);
         return fragment;
@@ -90,14 +91,17 @@ public class StepFragment extends Fragment {
         if (getArguments() != null) {
             recipesArrayList = getArguments().getParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST);
             mCurrentStepId = getArguments().getInt(Constants.KEY_CURRENT_STEP_ID);
-            mStepsCellsNumber = getArguments().getInt(Constants.KEY_STEP_CELLS_NUMBER);
+            mStepsCellsNumber = getArguments().getInt(Constants.KEY_STEPS_SIZE_NUMBER);
             currentRecipe = recipesArrayList.get(0);
 
             currentStep  = currentRecipe.getSteps().get(mCurrentStepId);
             description = currentStep.getDescription();
             videoUrl = currentStep.getVideoURL();
             thumbnailUrl = currentStep.getThumbnailURL();
+        }
 
+        if (savedInstanceState != null){
+            videoPosition = savedInstanceState.getLong(Constants.KEY_VIDEO_POSITION_KEY);
         }
     }
 
@@ -175,11 +179,18 @@ public class StepFragment extends Fragment {
             String userAgent = Util.getUserAgent(mContext, TAG);
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mContext, userAgent);
             MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+
             mSimpleExoPlayer.prepare(mediaSource);
 
             mSimpleExoPlayer.setPlayWhenReady(true);
             mSimpleExoPlayer.seekTo(videoPosition);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(Constants.KEY_VIDEO_POSITION_KEY, videoPosition);
     }
 
     @Override
@@ -202,6 +213,9 @@ public class StepFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if ((Util.SDK_INT <= 23 || mSimpleExoPlayer == null)) {
+            publishMediaPlayer();
+        }
     }
 
     @Override
@@ -215,14 +229,13 @@ public class StepFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        if (mSimpleExoPlayer != null) videoPosition = mSimpleExoPlayer.getCurrentPosition();
+        releasePlayer();
     }
 
     private void releasePlayer() {
         if (mSimpleExoPlayer != null) {
             videoPosition = mSimpleExoPlayer.getCurrentPosition();
-        }
-
-        if (mSimpleExoPlayer != null) {
             mSimpleExoPlayer.stop();
             mSimpleExoPlayer.release();
             mSimpleExoPlayer = null;
