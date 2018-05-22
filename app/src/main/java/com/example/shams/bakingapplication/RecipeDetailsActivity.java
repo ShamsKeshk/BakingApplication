@@ -29,23 +29,49 @@ public class RecipeDetailsActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
+        isTwoPane = getResources().getBoolean(R.bool.isTablet);
+
         if (isTwoPane){
+            int stepsSize = recipesArrayList.get(0).getSteps().size();
+            setFragmentsIfTwoPane(recipesArrayList,stepsSize,0);
 
         }else {
-            RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(recipesArrayList);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fl_details_container_fragment,recipeDetailsFragment)
-                    .commit();
+            setRecipeDetailsFragmentOnePane(recipesArrayList);
         }
+    }
+
+    private void setFragmentsIfTwoPane(ArrayList<Recipes> recipesArrayList,int stepsSize,int currentStepId){
+        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(recipesArrayList);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fl_details_container_fragment,recipeDetailsFragment)
+                .commit();
+        StepFragment stepFragment = StepFragment
+                .newInstance(currentStepId,
+                        stepsSize,recipesArrayList);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fl_step_container_fragment_id,stepFragment)
+                .commit();
+    }
+
+    private void setRecipeDetailsFragmentOnePane (ArrayList<Recipes> recipesArrayList){
+        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(recipesArrayList);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fl_details_container_fragment,recipeDetailsFragment)
+                .commit();
     }
 
     @Override
     public void onItemClickListenerInteraction(int itemId) {
         int stepCellsNUmber = recipesArrayList.get(0).getSteps().size();
-        Intent intent = new Intent(this,StepActivity.class);
-        intent.putExtra(Constants.KEY_CURRENT_STEP_ID,itemId);
-        intent.putExtra(Constants.KEY_STEPS_SIZE_NUMBER,stepCellsNUmber);
-        intent.putParcelableArrayListExtra(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST,recipesArrayList);
-        startActivity(intent);
+
+        if (isTwoPane) {
+            setFragmentsIfTwoPane(recipesArrayList,stepCellsNUmber,itemId);
+        } else {
+            Intent intent = new Intent(this, StepActivity.class);
+            intent.putExtra(Constants.KEY_CURRENT_STEP_ID, itemId);
+            intent.putExtra(Constants.KEY_STEPS_SIZE_NUMBER, stepCellsNUmber);
+            intent.putParcelableArrayListExtra(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST, recipesArrayList);
+            startActivity(intent);
+        }
     }
 }

@@ -4,18 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StepActivity"
-    android:orientation="vertical">
-
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical">
+    tools:context=".StepActivity">
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:orientation="horizontal">
+       android:orientation="vertical">
+
+   <FrameLayout
+       android:id="@+id/fl_step_container_fragment_id"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="5"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:orientation="horizontal"
+       android:layout_weight="1">
+      <Button
+          android:id="@+id/btn_previous_step_button_id"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="Previous Step"/>
+
       <Button
           android:id="@+id/btn_next_step_button_id"
           android:layout_width="0dp"
@@ -23,18 +36,8 @@
           android:layout_weight="1"
           android:text="Next Step"/>
 
-      <Button
-          android:id="@+id/btn_previous_step_button_id"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:text="Previous Step"/>
+   </LinearLayout>
    </LinearLayout>
 
-   <FrameLayout
-       android:id="@+id/fl_step_container_fragment_id"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
-   </LinearLayout>
 
 </ScrollView>
