@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="4dp"
     app:cardCornerRadius="4dp"
+    android:elevation="6dp"
     xmlns:tools="http://schemas.android.com/tools">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="?android:selectableItemBackground">
         <ImageView
             android:id="@+id/iv_recipe_image_view_id"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"/>
@@ -21,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="vertical"
+            android:background="#80FFC107"
             android:layout_gravity="bottom|center">
             <TextView
                 android:id="@+id/tv_recipe_name_text_view_id"
@@ -28,14 +30,16 @@
                 android:layout_height="wrap_content"
                 tools:text="Cake Name"
                 android:textSize="18sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/primary_text"/>
             <TextView
                 android:id="@+id/tv_recipe_servings_text_view_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Servings : 8"
                 android:textSize="16sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/primary_text"/>
         </LinearLayout>
     </FrameLayout>
 

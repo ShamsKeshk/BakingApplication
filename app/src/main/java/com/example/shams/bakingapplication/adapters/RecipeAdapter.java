@@ -1,9 +1,7 @@
 package com.example.shams.bakingapplication.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.shams.bakingapplication.R;
 import com.example.shams.bakingapplication.model.Recipes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,24 +25,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
     private ListClickListenerInterface listClickListenerInterface;
     private Context context;
 
-    public RecipeAdapter(ListClickListenerInterface listClickListenerInterface){
+    public RecipeAdapter(ListClickListenerInterface listClickListenerInterface) {
         this.listClickListenerInterface = listClickListenerInterface;
     }
 
-    public interface ListClickListenerInterface{
-        void onItemClickListener(Recipes recipe);
-    }
-
-    public Recipes getItem(int position){
+    public Recipes getItem(int position) {
         return recipesList.get(position);
     }
-
 
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.recipe_list_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recipe_list_item, parent, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -69,7 +61,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             if (!TextUtils.isEmpty(recipeImage)) {
                 Glide.with(context).load(recipeImage).into(holder.recipeImageView);
             } else {
-                Glide.with(context).load(R.drawable.chocolate_dessert).into(holder.recipeImageView);
+                Glide.with(context).load(R.drawable.baker).into(holder.recipeImageView);
             }
 
             if (!(recipeServings < 0)) {
@@ -85,20 +77,23 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
 
     @Override
     public int getItemCount() {
-         if(recipesList != null){
+        if (recipesList != null) {
             return recipesList.size();
-         }else {
-             return 0;
-         }
+        } else {
+            return 0;
+        }
     }
 
-    public void setRecipesList(List<Recipes> recipesList){
+    public void setRecipesList(List<Recipes> recipesList) {
         this.recipesList = recipesList;
         notifyDataSetChanged();
     }
 
+    public interface ListClickListenerInterface {
+        void onItemClickListener(Recipes recipe);
+    }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_recipe_image_view_id)
         ImageView recipeImageView;
@@ -109,9 +104,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
         @BindView(R.id.tv_recipe_servings_text_view_id)
         TextView recipeServingsTextView;
 
-        public RecyclerViewHolder(View view){
+        public RecyclerViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
             view.setOnClickListener(this);
         }
 
