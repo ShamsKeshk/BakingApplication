@@ -1,6 +1,12 @@
 package com.example.shams.bakingapplication.adapters;
 
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,6 +19,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.shams.bakingapplication.R;
 import com.example.shams.bakingapplication.model.Recipes;
+import com.example.shams.bakingapplication.testWidget.RecipesAppWidget;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -114,6 +122,24 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
         public void onClick(View v) {
             Recipes recipe = recipesList.get(getAdapterPosition());
             listClickListenerInterface.onItemClickListener(recipe);
+
+            SharedPreferences.Editor editor =
+                    PreferenceManager.
+                    getDefaultSharedPreferences(context).edit();
+            editor.putString("shared_recipe_key" , (new Gson()).toJson(recipe));
+
+            editor.apply();
+
+            widgetDataChange();
+        }
+
+        private void widgetDataChange(){
+            ComponentName recipeAppWidget = new ComponentName(context, RecipesAppWidget.class);
+            int[] widgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(recipeAppWidget);
+            Intent intent = new Intent(context , RecipesAppWidget.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS , widgetIds);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            context.sendBroadcast(intent);
         }
     }
 }

@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.progress_par_main_activity_id)
     ProgressBar progressBar;
 
-    ArrayList<Recipes> recipesArrayList;
+    public static ArrayList<Recipes> recipesArrayList;
 
     RecipeAdapter recipeAdapter;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -10,4 +10,6 @@ public class Constants {
     public static final String KEY_STEPS_SIZE_NUMBER = "steps_size_number_key";
 
     public static final String KEY_VIDEO_POSITION_KEY = "video_position_key";
+
+
 }
