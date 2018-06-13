@@ -8,4 +8,5 @@
     android:textSize="18sp"
     android:textStyle="bold"
     android:background="#ffffff"
+    android:textColor="@color/primary_text"
     android:id="@+id/tv_recipe_ingredient_widget_list_item_id" />

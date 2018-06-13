@@ -6,38 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".StepActivity">
 
-   <LinearLayout
+   <android.support.constraint.ConstraintLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical">
 
-   <FrameLayout
-       android:id="@+id/fl_step_container_fragment_id"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="5"/>
+      <FrameLayout
+          android:id="@+id/fl_step_container_fragment_id"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginTop="16dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:orientation="horizontal"
-       android:layout_weight="1">
       <Button
           android:id="@+id/btn_previous_step_button_id"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
+          android:layout_width="160dp"
+          android:layout_height="43dp"
+          android:layout_margin="8dp"
           android:layout_weight="1"
-          android:text="Previous Step"/>
+          android:background="@color/colorPrimary"
+          android:text="@string/previous_step"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/fl_step_container_fragment_id"
+          app:layout_constraintVertical_bias="1.0" />
+
+      <View
+          android:layout_width="1dp"
+          android:layout_height="30dp"
+          android:layout_margin="8dp"
+          android:background="@color/text_icons"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/btn_next_step_button_id"
+          app:layout_constraintHorizontal_bias="0.572"
+          app:layout_constraintStart_toEndOf="@+id/btn_previous_step_button_id"
+          app:layout_constraintTop_toBottomOf="@+id/fl_step_container_fragment_id"
+          app:layout_constraintVertical_bias="0.384" />
 
       <Button
           android:id="@+id/btn_next_step_button_id"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
+          android:layout_width="160dp"
+          android:layout_height="43dp"
+          android:layout_margin="8dp"
           android:layout_weight="1"
-          android:text="Next Step"/>
+          android:background="@color/colorPrimary"
+          android:text="@string/next_step"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/fl_step_container_fragment_id"
+          app:layout_constraintVertical_bias="1.0" />
 
-   </LinearLayout>
-   </LinearLayout>
+   </android.support.constraint.ConstraintLayout>
 
 
 </ScrollView>

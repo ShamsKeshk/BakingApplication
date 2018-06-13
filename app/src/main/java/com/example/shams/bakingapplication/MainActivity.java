@@ -2,11 +2,15 @@ package com.example.shams.bakingapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.shams.bakingapplication.adapters.RecipeAdapter;
 import com.example.shams.bakingapplication.model.Recipes;
@@ -29,10 +33,15 @@ public class MainActivity extends AppCompatActivity
     RecyclerView recyclerView;
     @BindView(R.id.progress_par_main_activity_id)
     ProgressBar progressBar;
+    @BindView(R.id.tv_empty_text_view_main_activity_id)
+    TextView tvEmptyTextView;
+    @BindView(R.id.coordinator_layout_id)
+    CoordinatorLayout coordinatorLayout;
 
     public static ArrayList<Recipes> recipesArrayList;
 
     RecipeAdapter recipeAdapter;
+    Snackbar snackbar ;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,31 +49,42 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        progressBar.setVisibility(View.VISIBLE);
-
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
 
-        recipeAdapter = new RecipeAdapter(this);
+        if (NetworkStatues.isConnected(this)){
+            recipeAdapter = new RecipeAdapter(this);
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(recipeAdapter);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(recipeAdapter);
 
-        recipeAdapter.setRecipesList(recipesArrayList);
-        recipeAdapter.notifyDataSetChanged();
+            recipeAdapter.setRecipesList(recipesArrayList);
+            recipeAdapter.notifyDataSetChanged();
 
-        retrievalListOfRecipes();
+            retrievalListOfRecipes();
+        }else {
+//           snackbar = Snackbar.make(coordinatorLayout ,,Snackbar.LENGTH_LONG);
+//           snackbar.setAction("Connect" , new ConnectListener());
+//           snackbar.show();
+            displaySnackBarConnectionError("No Internet Connection");
+        }
 
+
+    }
+
+    private void displaySnackBarConnectionError(String errorMessage){
+        snackbar = Snackbar.make(coordinatorLayout ,errorMessage,Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Connect" , new ConnectListener());
+        snackbar.show();
     }
 
     public void retrievalListOfRecipes() {
 
-        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+        progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Api.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClientBuilder.build())
                 .build();
         Api apiInterface = retrofit.create(Api.class);
 
@@ -76,6 +96,7 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(Call<ArrayList<Recipes>> call, Response<ArrayList<Recipes>> response) {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
+                    tvEmptyTextView.setVisibility(View.GONE);
                     recipesArrayList = response.body();
                     recipeAdapter.setRecipesList(recipesArrayList);
                     recipeAdapter.notifyDataSetChanged();
@@ -84,6 +105,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ArrayList<Recipes>> call, Throwable throwable) {
+                progressBar.setVisibility(View.GONE);
+                tvEmptyTextView.setText("Failed to Retrieve Data");
+                tvEmptyTextView.setVisibility(View.VISIBLE);
+//                Snackbar.make(coordinatorLayout ,"Check your Network",Snackbar.LENGTH_LONG)
+//                        .show();
+                displaySnackBarConnectionError("Check your Network");
 
             }
         });
@@ -100,5 +127,14 @@ public class MainActivity extends AppCompatActivity
         intent.putExtras(bundle);
         startActivity(intent);
 
+    }
+
+    public class ConnectListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent settingsIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            startActivity(settingsIntent);
+        }
     }
 }

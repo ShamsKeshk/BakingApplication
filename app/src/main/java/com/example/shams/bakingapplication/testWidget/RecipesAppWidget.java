@@ -70,6 +70,7 @@ public class RecipesAppWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         currentWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+        assert intent.getAction() != null;
         if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
             onUpdate(context,AppWidgetManager.getInstance(context),currentWidgetIds);
             AppWidgetManager.getInstance(context)

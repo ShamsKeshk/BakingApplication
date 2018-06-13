@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.shams.bakingapplication.Constants;
 import com.example.shams.bakingapplication.R;
 import com.example.shams.bakingapplication.model.Recipes;
 import com.example.shams.bakingapplication.testWidget.RecipesAppWidget;
@@ -126,7 +127,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             SharedPreferences.Editor editor =
                     PreferenceManager.
                     getDefaultSharedPreferences(context).edit();
-            editor.putString("shared_recipe_key" , (new Gson()).toJson(recipe));
+            editor.putString(Constants.KEY_SHARED_PREFERENCE_CURRENT_RECIPE_KEY, (new Gson()).toJson(recipe));
 
             editor.apply();
 

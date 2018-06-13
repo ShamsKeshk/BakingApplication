@@ -1,8 +1,8 @@
 package com.example.shams.bakingapplication;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
  */
 public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.DetailItemOnClickListener {
 
-    private ArrayList<Recipes> currentRecipe;
 
     @BindView(R.id.expand_text_view)
     ExpandableTextView expandableTextView;
@@ -42,9 +41,6 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
     RecyclerView recyclerView;
 
     private OnFragmentListItemClickListener mListener;
-    private List<Ingredients> ingredients;
-    private List<Steps> steps;
-    private DetailsAdapter detailsAdapter;
 
     public RecipeDetailsFragment() {
         // Required empty public constructor
@@ -65,16 +61,23 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe_details, container, false);
 
         ButterKnife.bind(this,view);
 
+        ArrayList<Recipes> currentRecipe;
+        List<Ingredients> ingredients;
+        List<Steps> steps;
+        DetailsAdapter detailsAdapter;
+
         if (getArguments() != null) {
 
             currentRecipe = getArguments().getParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST);
+
+            assert currentRecipe!= null;
 
             ingredients = currentRecipe.get(0).getIngredients();
             steps = currentRecipe.get(0).getSteps();
@@ -87,9 +90,13 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
             detailsAdapter.setStepsList(steps);
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < ingredients.size(); i++) {
-                stringBuilder.append("* " + ingredients.get(0).getQuantity() +
-                        " " + ingredients.get(0).getMeasure() +
-                        " of  " + ingredients.get(i).getIngredient() + "\n\n");
+                stringBuilder.append("* ")
+                        .append(ingredients.get(0).getQuantity())
+                        .append(" ")
+                        .append(ingredients.get(0).getMeasure())
+                        .append(" of  ")
+                        .append(ingredients.get(i).getIngredient())
+                        .append("\n\n");
             }
 
             expandableTextView.setText(String.valueOf(stringBuilder));
@@ -104,7 +111,7 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
             mListener = (OnFragmentListItemClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentListItemClickListener");
+                    + getString(R.string.must_implement_on_fragment_list_item_click_listener));
         }
     }
 
