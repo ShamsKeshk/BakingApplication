@@ -1,9 +1,8 @@
 package com.example.shams.bakingapplication;
 
-import android.os.PersistableBundle;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,11 +34,10 @@ public class StepActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         mCurrentStepId = bundle.getInt(Constants.KEY_CURRENT_STEP_ID);
         mStepsCellsNumber = bundle.getInt(Constants.KEY_STEPS_SIZE_NUMBER);
         mCurrentRecipesArrayList = bundle.getParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST);
-
-
 
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {

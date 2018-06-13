@@ -1,7 +1,6 @@
 package com.example.shams.bakingapplication.adapters;
 
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
         this.listClickListenerInterface = listClickListenerInterface;
     }
 
-    public Recipes getItem(int position) {
+    private Recipes getItem(int position) {
         return recipesList.get(position);
     }
 
@@ -124,9 +123,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             Recipes recipe = recipesList.get(getAdapterPosition());
             listClickListenerInterface.onItemClickListener(recipe);
 
+            /**
+             * Save Current Recipe that user choose in shared preference to display it's
+             * Ingredients in widget .
+             * */
             SharedPreferences.Editor editor =
                     PreferenceManager.
-                    getDefaultSharedPreferences(context).edit();
+                            getDefaultSharedPreferences(context).edit();
             editor.putString(Constants.KEY_SHARED_PREFERENCE_CURRENT_RECIPE_KEY, (new Gson()).toJson(recipe));
 
             editor.apply();
@@ -134,11 +137,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
             widgetDataChange();
         }
 
-        private void widgetDataChange(){
+        private void widgetDataChange() {
             ComponentName recipeAppWidget = new ComponentName(context, RecipesAppWidget.class);
             int[] widgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(recipeAppWidget);
-            Intent intent = new Intent(context , RecipesAppWidget.class);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS , widgetIds);
+            Intent intent = new Intent(context, RecipesAppWidget.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             context.sendBroadcast(intent);
         }

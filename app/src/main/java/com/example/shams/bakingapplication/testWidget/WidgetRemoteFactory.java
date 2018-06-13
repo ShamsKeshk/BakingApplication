@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.shams.bakingapplication.Constants;
 import com.example.shams.bakingapplication.MainActivity;
 import com.example.shams.bakingapplication.R;
 import com.example.shams.bakingapplication.model.Ingredients;
@@ -34,29 +35,28 @@ public class WidgetRemoteFactory implements RemoteViewsService.RemoteViewsFactor
         ingredients = getListOfIngredients(ingredients);
     }
 
-    private List<Ingredients> getListOfIngredients(List<Ingredients> ingredients){
+    private List<Ingredients> getListOfIngredients(List<Ingredients> ingredients) {
         Gson gson = new Gson();
 
         String currentRecipeJson = PreferenceManager
                 .getDefaultSharedPreferences(context)
-                .getString("shared_recipe_key", null);
+                .getString(Constants.KEY_SHARED_PREFERENCE_CURRENT_RECIPE_KEY, null);
 
-        if (currentRecipeJson != null){
-            Recipes recipe = gson.fromJson(currentRecipeJson , Recipes.class);
+        if (currentRecipeJson != null) {
+            Recipes recipe = gson.fromJson(currentRecipeJson, Recipes.class);
             ingredients = recipe.getIngredients();
         }
         return ingredients;
     }
 
 
-
     @Override
     public void onDataSetChanged() {
 
         ingredients = getListOfIngredients(ingredients);
-        currentWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+        currentWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        RecipesAppWidget.updateAppWidget(context,AppWidgetManager.getInstance(context),currentWidgetId);
+        RecipesAppWidget.updateAppWidget(context, AppWidgetManager.getInstance(context), currentWidgetId);
 
 
     }
@@ -70,7 +70,7 @@ public class WidgetRemoteFactory implements RemoteViewsService.RemoteViewsFactor
     public int getCount() {
         if (ingredients != null) {
             return ingredients.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -82,10 +82,11 @@ public class WidgetRemoteFactory implements RemoteViewsService.RemoteViewsFactor
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_list_item);
 
 
-        remoteViews.setTextViewText(R.id.tv_recipe_ingredient_widget_list_item_id,ingredient);
+        remoteViews.setTextViewText(R.id.tv_recipe_ingredient_widget_list_item_id, ingredient);
 
-        Intent intent = new Intent(context , MainActivity.class);
-        remoteViews.setOnClickFillInIntent(R.id.tv_recipe_ingredient_widget_list_item_id,intent);
+        //When Item from list clicked Open Main Activity
+        Intent intent = new Intent(context, MainActivity.class);
+        remoteViews.setOnClickFillInIntent(R.id.tv_recipe_ingredient_widget_list_item_id, intent);
 
 
         return remoteViews;

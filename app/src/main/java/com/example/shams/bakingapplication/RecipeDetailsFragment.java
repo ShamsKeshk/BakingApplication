@@ -66,7 +66,7 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe_details, container, false);
 
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         ArrayList<Recipes> currentRecipe;
         List<Ingredients> ingredients;
@@ -77,7 +77,7 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
 
             currentRecipe = getArguments().getParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST);
 
-            assert currentRecipe!= null;
+            assert currentRecipe != null;
 
             ingredients = currentRecipe.get(0).getIngredients();
             steps = currentRecipe.get(0).getSteps();
@@ -121,13 +121,13 @@ public class RecipeDetailsFragment extends Fragment implements DetailsAdapter.De
         mListener = null;
     }
 
-    public interface OnFragmentListItemClickListener {
-
-        void onItemClickListenerInteraction(int itemId);
-    }
-
     @Override
     public void onItemClicked(Steps steps) {
         mListener.onItemClickListenerInteraction(steps.getId());
+    }
+
+    public interface OnFragmentListItemClickListener {
+
+        void onItemClickListenerInteraction(int itemId);
     }
 }

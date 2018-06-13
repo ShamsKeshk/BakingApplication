@@ -1,20 +1,19 @@
-package com.example.shams.bakingapplication;
+package com.example.shams.bakingapplication.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class NetworkStatues {
 
-    public static boolean isConnected(Context context){
+    public static boolean isConnected(Context context) {
         ConnectivityManager connectivityManager =
-                (ConnectivityManager)context
+                (ConnectivityManager) context
                         .getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = null;
 
-        if (connectivityManager != null){
+        if (connectivityManager != null) {
             networkInfo = connectivityManager.getActiveNetworkInfo();
         }
 

@@ -1,25 +1,28 @@
 package com.example.shams.bakingapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shams.bakingapplication.adapters.RecipeAdapter;
 import com.example.shams.bakingapplication.model.Recipes;
+import com.example.shams.bakingapplication.utils.NetworkStatues;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,38 +40,48 @@ public class MainActivity extends AppCompatActivity
     TextView tvEmptyTextView;
     @BindView(R.id.coordinator_layout_id)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipe_refresh_layout_id_main_activity)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public static ArrayList<Recipes> recipesArrayList;
 
     RecipeAdapter recipeAdapter;
     Snackbar snackbar ;
-    
+
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int scalingFactor = 180;
+        int noOfColumns = (int) (dpWidth / scalingFactor);
+        if (noOfColumns < 2)
+            noOfColumns = 2;
+        return noOfColumns;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
+        recipeAdapter = new RecipeAdapter(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(recipeAdapter);
+        recipeAdapter.setRecipesList(recipesArrayList);
+        recipeAdapter.notifyDataSetChanged();
 
-        if (NetworkStatues.isConnected(this)){
-            recipeAdapter = new RecipeAdapter(this);
+        requestRecipesList();
 
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(recipeAdapter);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestRecipesList();
+                swipeRefreshLayout.setRefreshing(false);
+            }
 
-            recipeAdapter.setRecipesList(recipesArrayList);
-            recipeAdapter.notifyDataSetChanged();
-
-            retrievalListOfRecipes();
-        }else {
-//           snackbar = Snackbar.make(coordinatorLayout ,,Snackbar.LENGTH_LONG);
-//           snackbar.setAction("Connect" , new ConnectListener());
-//           snackbar.show();
-            displaySnackBarConnectionError("No Internet Connection");
-        }
-
+        });
 
     }
 
@@ -76,6 +89,22 @@ public class MainActivity extends AppCompatActivity
         snackbar = Snackbar.make(coordinatorLayout ,errorMessage,Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction("Connect" , new ConnectListener());
         snackbar.show();
+    }
+
+    private void requestRecipesList() {
+
+        if (NetworkStatues.isConnected(this)) {
+
+            retrievalListOfRecipes();
+            if (snackbar != null) {
+                snackbar.dismiss();
+            }
+        } else {
+            if (recipesArrayList == null) {
+                displayErrorText(getString(R.string.no_internet_connection));
+            }
+            displaySnackBarConnectionError(getString(R.string.failed_to_retrieve_data));
+        }
     }
 
     public void retrievalListOfRecipes() {
@@ -106,10 +135,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onFailure(Call<ArrayList<Recipes>> call, Throwable throwable) {
                 progressBar.setVisibility(View.GONE);
-                tvEmptyTextView.setText("Failed to Retrieve Data");
-                tvEmptyTextView.setVisibility(View.VISIBLE);
-//                Snackbar.make(coordinatorLayout ,"Check your Network",Snackbar.LENGTH_LONG)
-//                        .show();
+                displayErrorText("Failed to Retrieve Data");
+
                 displaySnackBarConnectionError("Check your Network");
 
             }
@@ -136,5 +163,10 @@ public class MainActivity extends AppCompatActivity
             Intent settingsIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
             startActivity(settingsIntent);
         }
+    }
+
+    private void displayErrorText(String message) {
+        tvEmptyTextView.setText(message);
+        tvEmptyTextView.setVisibility(View.VISIBLE);
     }
 }

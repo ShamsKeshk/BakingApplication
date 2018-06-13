@@ -1,13 +1,10 @@
 package com.example.shams.bakingapplication;
 
 import android.content.Context;
-import android.net.ProxyInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +12,10 @@ import android.widget.TextView;
 
 import com.example.shams.bakingapplication.model.Recipes;
 import com.example.shams.bakingapplication.model.Steps;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.example.shams.bakingapplication.utils.RequestMediaPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import com.google.android.exoplayer2.util.Util;
 
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -52,7 +35,6 @@ public class StepFragment extends Fragment {
     private Steps currentStep ;
     private String description;
     private String videoUrl;
-    private String thumbnailUrl;
 
     private Context mContext;
 
@@ -87,7 +69,6 @@ public class StepFragment extends Fragment {
             currentStep  = currentRecipe.getSteps().get(mCurrentStepId);
             description = currentStep.getDescription();
             videoUrl = currentStep.getVideoURL();
-            thumbnailUrl = currentStep.getThumbnailURL();
         }
 
         if (savedInstanceState != null){
@@ -110,8 +91,6 @@ public class StepFragment extends Fragment {
 
         return view;
     }
-
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

@@ -21,27 +21,27 @@ public class RecipesAppWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        startServiceToDisplayList(appWidgetId,context);
+        startServiceToDisplayList(appWidgetId, context);
 
         handleRemoteViewClick(context);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    private static void startServiceToDisplayList(int appWidgetId,Context context){
-        Intent recipeService = new Intent(context , WidgetService.class);
-        recipeService.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID , appWidgetId);
+    private static void startServiceToDisplayList(int appWidgetId, Context context) {
+        Intent recipeService = new Intent(context, WidgetService.class);
+        recipeService.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
-        remoteViews = new RemoteViews(context.getPackageName() , R.layout.recipes_app_widget);
+        remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipes_app_widget);
 
-        remoteViews.setRemoteAdapter(R.id.lv_recipes_ingredient_widget_list_id ,recipeService);
+        remoteViews.setRemoteAdapter(R.id.lv_recipes_ingredient_widget_list_id, recipeService);
 
     }
 
-    private static void handleRemoteViewClick(Context context){
-        Intent intent = new Intent(context , MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setPendingIntentTemplate(R.id.lv_recipes_ingredient_widget_list_id , pendingIntent);
+    private static void handleRemoteViewClick(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.lv_recipes_ingredient_widget_list_id, pendingIntent);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RecipesAppWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
 
-            startServiceToDisplayList(appWidgetId,context);
+            startServiceToDisplayList(appWidgetId, context);
 
             handleRemoteViewClick(context);
 
@@ -71,10 +71,10 @@ public class RecipesAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         currentWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
         assert intent.getAction() != null;
-        if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
-            onUpdate(context,AppWidgetManager.getInstance(context),currentWidgetIds);
+        if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
+            onUpdate(context, AppWidgetManager.getInstance(context), currentWidgetIds);
             AppWidgetManager.getInstance(context)
-                    .notifyAppWidgetViewDataChanged(currentWidgetIds ,
+                    .notifyAppWidgetViewDataChanged(currentWidgetIds,
                             R.id.lv_recipes_ingredient_widget_list_id);
         }
         super.onReceive(context, intent);

@@ -28,7 +28,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.DetailsR
         this.mOnItemClickListener = onClickListener;
     }
 
-    public Steps getItem(int position) {
+    private Steps getItem(int position) {
         return stepsList.get(position);
     }
 

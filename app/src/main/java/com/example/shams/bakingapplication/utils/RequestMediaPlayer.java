@@ -1,4 +1,4 @@
-package com.example.shams.bakingapplication;
+package com.example.shams.bakingapplication.utils;
 
 import android.content.Context;
 import android.net.Uri;
@@ -20,8 +20,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import retrofit2.http.PUT;
-
 public final class RequestMediaPlayer {
 
     public static SimpleExoPlayer mSimpleExoPlayer;
@@ -31,13 +29,13 @@ public final class RequestMediaPlayer {
     public static TrackSelector mTrackSelector;
     public static long videoPosition;
 
-    public static void publishMediaPlayer(Uri videoUrl,Context mContext,String TAG,PlayerView playerView){
-        initializeSession(mContext,TAG);
-        initializePlayer(videoUrl,mContext,TAG,playerView);
+    public static void publishMediaPlayer(Uri videoUrl, Context mContext, String TAG, PlayerView playerView) {
+        initializeSession(mContext, TAG);
+        initializePlayer(videoUrl, mContext, TAG, playerView);
     }
 
-    public static void initializeSession(Context mContext, String TAG){
-        mMediaSessionCompat = new MediaSessionCompat(mContext,TAG);
+    public static void initializeSession(Context mContext, String TAG) {
+        mMediaSessionCompat = new MediaSessionCompat(mContext, TAG);
         mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
                 | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
         mMediaSessionCompat.setMediaButtonReceiver(null);
@@ -73,8 +71,8 @@ public final class RequestMediaPlayer {
         mMediaSessionCompat.setActive(true);
     }
 
-    public static void initializePlayer(Uri uri, Context mContext, String TAG, PlayerView playerView){
-        if (mSimpleExoPlayer == null){
+    public static void initializePlayer(Uri uri, Context mContext, String TAG, PlayerView playerView) {
+        if (mSimpleExoPlayer == null) {
 
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
             mTrackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -109,7 +107,7 @@ public final class RequestMediaPlayer {
             mMediaSessionCompat.setActive(false);
         }
 
-        if (mTrackSelector !=  null) {
+        if (mTrackSelector != null) {
             mTrackSelector = null;
         }
     }

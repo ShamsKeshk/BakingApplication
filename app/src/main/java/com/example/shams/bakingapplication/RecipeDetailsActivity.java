@@ -1,9 +1,9 @@
 package com.example.shams.bakingapplication;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.example.shams.bakingapplication.model.Recipes;
 
@@ -25,6 +25,7 @@ public class RecipeDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_recipe_details);
 
         currentBundle = getIntent().getExtras();
+        assert currentBundle != null;
         recipesArrayList = currentBundle.getParcelableArrayList(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST);
 
         fragmentManager = getSupportFragmentManager();

@@ -8,6 +8,19 @@ import java.util.List;
 
 public class Recipes implements Parcelable {
 
+    public static final Parcelable.Creator<Recipes> CREATOR
+            = new Parcelable.Creator<Recipes>() {
+        @Override
+        public Recipes createFromParcel(Parcel source) {
+            return new Recipes(source);
+        }
+
+        @Override
+        public Recipes[] newArray(int size) {
+            return new Recipes[size];
+        }
+    };
+
     private int id;
     private String name;
     private List<Ingredients> ingredients;
@@ -24,13 +37,13 @@ public class Recipes implements Parcelable {
         this.image = image;
     }
 
-    private Recipes(Parcel parcel){
+    private Recipes(Parcel parcel) {
         id = parcel.readInt();
         name = parcel.readString();
         ingredients = new ArrayList<>();
-        parcel.readList(ingredients,Ingredients.class.getClassLoader());
+        parcel.readList(ingredients, Ingredients.class.getClassLoader());
         steps = new ArrayList<>();
-        parcel.readList(steps,Steps.class.getClassLoader());
+        parcel.readList(steps, Steps.class.getClassLoader());
         servings = parcel.readInt();
         image = parcel.readString();
     }
@@ -97,18 +110,5 @@ public class Recipes implements Parcelable {
     public void setImage(String image) {
         this.image = image;
     }
-
-    public static final Parcelable.Creator<Recipes> CREATOR
-            = new Parcelable.Creator<Recipes>() {
-        @Override
-        public Recipes createFromParcel(Parcel source) {
-            return new Recipes(source);
-        }
-
-        @Override
-        public Recipes[] newArray(int size) {
-            return new Recipes[size];
-        }
-    };
 
 }

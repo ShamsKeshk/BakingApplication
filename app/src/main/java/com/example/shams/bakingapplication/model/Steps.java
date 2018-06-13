@@ -3,7 +3,19 @@ package com.example.shams.bakingapplication.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Steps implements Parcelable{
+public class Steps implements Parcelable {
+    public static final Parcelable.Creator<Steps> CREATOR
+            = new Parcelable.Creator<Steps>() {
+        @Override
+        public Steps createFromParcel(Parcel source) {
+            return new Steps(source);
+        }
+
+        @Override
+        public Steps[] newArray(int size) {
+            return new Steps[size];
+        }
+    };
     private int id;
     private String shortDescription;
     private String description;
@@ -18,7 +30,7 @@ public class Steps implements Parcelable{
         this.thumbnailURL = thumbnailURL;
     }
 
-    private Steps(Parcel parcel){
+    private Steps(Parcel parcel) {
         id = parcel.readInt();
         shortDescription = parcel.readString();
         description = parcel.readString();
@@ -79,17 +91,4 @@ public class Steps implements Parcelable{
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
     }
-
-    public static final Parcelable.Creator<Steps> CREATOR
-            = new Parcelable.Creator<Steps>() {
-        @Override
-        public Steps createFromParcel(Parcel source) {
-            return new Steps(source);
-        }
-
-        @Override
-        public Steps[] newArray(int size) {
-            return new Steps[size];
-        }
-    };
 }
