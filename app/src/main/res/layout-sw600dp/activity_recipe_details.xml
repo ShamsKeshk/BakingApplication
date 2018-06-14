@@ -7,13 +7,13 @@
     
     <FrameLayout
         android:id="@+id/fl_details_container_fragment"
-        android:layout_width="400dp"
+        android:layout_width="@dimen/frame_container_two_pane_width"
         android:layout_height="match_parent"/>
 
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/default_margin"
         android:background="@color/primary_text" />
 
     <FrameLayout

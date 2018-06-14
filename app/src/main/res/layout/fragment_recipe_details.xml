@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".RecipeDetailsFragment"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="4dp"
-    android:elevation="6dp">
+    style="@style/card_view_style">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,11 +10,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/default_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
-            android:text="Ingredients"
+            android:text="@string/ingredients"
             android:textColor="@color/primary_text"
             android:textStyle="bold"/>
 
@@ -31,33 +25,33 @@
         android:layout_height="wrap_content"
         expandableTextView:maxCollapsedLines="4"
         expandableTextView:animDuration="200"
-        android:layout_margin="8dp">
+        android:layout_margin="@dimen/margin_8dp">
         <TextView
             android:id="@id/expandable_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="16sp"
-            android:textColor="#666666"/>
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_16sp" />
         <ImageButton
             android:id="@id/expand_collapse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_gravity="right|bottom"
+            android:layout_gravity="end|bottom"
+            android:padding="@dimen/default_padding"
             android:background="@android:color/transparent"/>
     </com.ms.square.android.expandabletextview.ExpandableTextView>
 
         <View
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/default_margin"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/primary_text"/>
 
     <android.support.v7.widget.RecyclerView
         android:background="@color/colorPrimary"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_8dp"
         android:id="@+id/rv_recipe_details_list_recycler_view_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

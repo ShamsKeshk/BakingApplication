@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/widget_margin"
         android:id="@+id/lv_recipes_ingredient_widget_list_id"/>
 
 </FrameLayout>

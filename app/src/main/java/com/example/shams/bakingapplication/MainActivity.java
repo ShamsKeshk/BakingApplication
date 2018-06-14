@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -43,10 +44,12 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.swipe_refresh_layout_id_main_activity)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    public static ArrayList<Recipes> recipesArrayList;
+    public ArrayList<Recipes> recipesArrayList;
 
     RecipeAdapter recipeAdapter;
     Snackbar snackbar ;
+
+    private IdlingResource idlingResource;
 
     public static int calculateNoOfColumns(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -168,5 +171,9 @@ public class MainActivity extends AppCompatActivity
     private void displayErrorText(String message) {
         tvEmptyTextView.setText(message);
         tvEmptyTextView.setVisibility(View.VISIBLE);
+    }
+
+    public ArrayList<Recipes> getRecipesArrayList() {
+        return recipesArrayList;
     }
 }

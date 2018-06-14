@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toolbar;
 
 import com.example.shams.bakingapplication.model.Recipes;
 
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 
 public class RecipeDetailsActivity extends AppCompatActivity
         implements RecipeDetailsFragment.OnFragmentListItemClickListener {
+
+
 
     Bundle currentBundle;
     ArrayList<Recipes> recipesArrayList;
