@@ -3,7 +3,10 @@ package com.example.shams.bakingapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
@@ -17,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shams.bakingapplication.adapters.RecipeAdapter;
+import com.example.shams.bakingapplication.idling.resource.SimpleIdlingResource;
 import com.example.shams.bakingapplication.model.Recipes;
 import com.example.shams.bakingapplication.utils.NetworkStatues;
 
@@ -33,6 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity
         implements RecipeAdapter.ListClickListenerInterface {
 
+    private static final int DELAY_MILLIS = 4000;
     @BindView(R.id.rv_recipe_recycler_view_main_activity_id)
     RecyclerView recyclerView;
     @BindView(R.id.progress_par_main_activity_id)
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     RecipeAdapter recipeAdapter;
     Snackbar snackbar ;
 
-    private IdlingResource idlingResource;
+    private SimpleIdlingResource simpleIdlingResource;
 
     public static int calculateNoOfColumns(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
         recipeAdapter = new RecipeAdapter(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -76,6 +83,22 @@ public class MainActivity extends AppCompatActivity
         recipeAdapter.notifyDataSetChanged();
 
         requestRecipesList();
+        getIdlingResource();
+
+        if (simpleIdlingResource != null) {
+            simpleIdlingResource.setIdleState(false);
+        }
+
+        // Delay the execution, return message via callback.
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (simpleIdlingResource != null) {
+                    simpleIdlingResource.setIdleState(true);
+                }
+            }
+        }, DELAY_MILLIS);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -175,5 +198,14 @@ public class MainActivity extends AppCompatActivity
 
     public ArrayList<Recipes> getRecipesArrayList() {
         return recipesArrayList;
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (simpleIdlingResource == null) {
+            simpleIdlingResource = new SimpleIdlingResource();
+        }
+        return simpleIdlingResource;
     }
 }
