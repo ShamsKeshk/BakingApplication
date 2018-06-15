@@ -9,7 +9,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.shams.bakingapplication.customEspress.RecyclerViewMatcher;
+import com.example.shams.bakingapplication.custom_matcher.RecyclerViewMatcher;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.hamcrest.CoreMatchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityIntentTest {
+public class ActivityIntentTest {
 
     @Rule
     public IntentsTestRule<MainActivity> mainActivityIntentsTestRule
@@ -59,15 +59,36 @@ public class MainActivityIntentTest {
     @Test
     public void testOnClickRecipesListItem() {
 
+        //Click on the first Recipe in recyclerView Of MainActivity
         onView(withId(R.id.rv_recipe_recycler_view_main_activity_id))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
+        //Check if RecipeDetailsActivity Is Opened after click
         intended(hasComponent(RecipeDetailsActivity.class.getName()));
 
+        //Check if the first short Description of recyclerView is "Recipe Introduction"
         onView(withRecyclerView(R.id.rv_recipe_details_list_recycler_view_id)
                 .atPositionOnView(0, R.id.tv_recipe_detail_short_description_text_view_id))
                 .check(matches(withText("Recipe Introduction")));
-    }
+
+        //Click on the first Step to check if the step Activity open correctly
+        onView(withId(R.id.rv_recipe_details_list_recycler_view_id))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        //Check if the correct Activity "Step Activity" Is Opened After Click
+        intended(hasComponent(StepActivity.class.getName()));
+
+        //Click on the Next Step Button.
+        onView(withId(R.id.btn_next_step_button_id))
+                .perform(click());
+
+        //Check If the next step Description Is Correct
+        onView(withId(R.id.tv_step_description_text_view_fragment_id))
+                .check(matches(withText("1. Preheat the oven to 350°F. Butter a 9\" deep dish pie pan.")));
+
+      }
+
+
 
     @After
     public void unregisterIdlingResource() {

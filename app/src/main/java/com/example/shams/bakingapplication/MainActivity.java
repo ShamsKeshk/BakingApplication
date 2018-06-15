@@ -196,10 +196,6 @@ public class MainActivity extends AppCompatActivity
         tvEmptyTextView.setVisibility(View.VISIBLE);
     }
 
-    public ArrayList<Recipes> getRecipesArrayList() {
-        return recipesArrayList;
-    }
-
     @VisibleForTesting
     @NonNull
     public IdlingResource getIdlingResource() {

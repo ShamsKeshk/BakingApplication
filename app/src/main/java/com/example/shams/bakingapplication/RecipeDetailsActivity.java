@@ -18,16 +18,12 @@ import java.util.ArrayList;
 public class RecipeDetailsActivity extends AppCompatActivity
         implements RecipeDetailsFragment.OnFragmentListItemClickListener {
 
-    private static final int DELAY_MILLIS = 4000;
-
     Bundle currentBundle;
     ArrayList<Recipes> recipesArrayList;
 
     boolean isTwoPane;
 
     private FragmentManager fragmentManager;
-
-    private SimpleIdlingResource simpleIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +46,6 @@ public class RecipeDetailsActivity extends AppCompatActivity
         }else {
             setRecipeDetailsFragmentOnePane(recipesArrayList);
         }
-
-        // Delay the execution, return message via callback.
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (simpleIdlingResource != null) {
-                    simpleIdlingResource.setIdleState(true);
-                }
-            }
-        }, DELAY_MILLIS);
 
     }
 
@@ -97,14 +82,5 @@ public class RecipeDetailsActivity extends AppCompatActivity
             intent.putParcelableArrayListExtra(Constants.KEY_RECIPE_PARCELABLE_ARRAY_LIST, recipesArrayList);
             startActivity(intent);
         }
-    }
-
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (simpleIdlingResource == null) {
-            simpleIdlingResource = new SimpleIdlingResource();
-        }
-        return simpleIdlingResource;
     }
 }

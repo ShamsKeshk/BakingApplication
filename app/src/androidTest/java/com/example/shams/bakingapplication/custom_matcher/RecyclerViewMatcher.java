@@ -1,5 +1,4 @@
-package com.example.shams.bakingapplication.customEspress;
-
+package com.example.shams.bakingapplication.custom_matcher;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +7,8 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-/**
- * Created by dannyroa on 5/10/15.
- */
 public class RecyclerViewMatcher {
+
     private final int recyclerViewId;
     private RecyclerView recyclerView ;
 
@@ -36,8 +33,7 @@ public class RecyclerViewMatcher {
                         idDescription = this.resources.getResourceName(recyclerViewId);
                     } catch (Resources.NotFoundException var4) {
                         idDescription = String.format("%s (resource name not found)",
-                                new Object[] { Integer.valueOf
-                                        (recyclerViewId) });
+                                recyclerViewId);
                     }
                 }
 
@@ -49,7 +45,6 @@ public class RecyclerViewMatcher {
                 this.resources = view.getResources();
 
                 if (childView == null) {
-                  //  recyclerView = view.getRootView().findViewById(recyclerViewId);
                     recyclerView = view.findViewById(recyclerViewId);
                     if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
                         childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;

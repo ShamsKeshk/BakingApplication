@@ -7,7 +7,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.shams.bakingapplication.customEspress.RecyclerViewMatcher;
+import com.example.shams.bakingapplication.custom_matcher.RecyclerViewMatcher;
 
 import org.junit.After;
 import org.junit.Before;
